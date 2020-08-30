@@ -17,6 +17,10 @@ var PEOPLE = [
 // ============
 // Uzyj R.compose() do uproszczenia ponizszej funkcji.
 var theirName = (people) => R.compose(R.prop('name'), R.last)(people)
+var theirName = (people) => {
+	let composedFn = R.compose(R.prop('name'), R.last)
+	return composedFn(people)
+}
 theirName(PEOPLE)  // => 'Jill'
 
 // Cwiczenie 2:
@@ -30,7 +34,11 @@ var nameOfTheFirstPerson = R.compose(R.prop('name'), R.head)(PEOPLE)  // => 'Joh
 // i zwrocic tylko tych, ktorzy maja 25 lat lub mniej.
 var onlyTwentyFiveYearOlds = R.compose(
 	R.filter(p => p.age <= 25), 
-	R.map(p => { p.age = R.inc(p.age); return p})
+	R.map(p => { 
+		let p2 = {...p}; 
+		p2.age = R.inc(p.age); 
+		return p2
+	})
 )(PEOPLE)
 
 // Cwiczenie 4:

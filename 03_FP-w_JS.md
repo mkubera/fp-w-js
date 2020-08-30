@@ -92,7 +92,7 @@ Czy kazde uzycie jakiejs wartosci spoza funkcji sprawia, ze funkcja staje sie im
 ```javascript
 var someNum = () => 1
 
-var addOne = n => n + someNum
+var addOne = n => n + someNum()
 
 addOne(2) // 3
 addOne(2) // 3
@@ -608,6 +608,9 @@ A jesli czujesz sie naprawde odwaznie, zachecam do sprawdzenia przykladu [Counte
 
 ## JS biblioteki
 * [RamdaJS](https://ramdajs.com/)
+* [Flow](https://flow.org)
+* [Immutable](https://immutable-js.github.io/immutable-js/)
+* [Chai Immutable](https://github.com/astorije/chai-immutable)
 
 ## Frontendowe jezyki funkcyjne kompilujace sie do JS
 * [Elm](https://elm-lang.org)
