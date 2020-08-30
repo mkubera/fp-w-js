@@ -17,6 +17,7 @@ var PEOPLE = [
 // ============
 // Uzyj R.compose() do uproszczenia ponizszej funkcji.
 var theirName = (people) => R.compose(R.prop('name'), R.last)(people)
+// lub
 var theirName = (people) => {
 	let composedFn = R.compose(R.prop('name'), R.last)
 	return composedFn(people)
@@ -26,26 +27,30 @@ theirName(PEOPLE)  // => 'Jill'
 // Cwiczenie 2:
 // ============
 // Uzyj R.compose(), R.prop(), oraz R.head(), zeby zwrocic imie pierwszej osoby.
-var nameOfTheFirstPerson = R.compose(R.prop('name'), R.head)(PEOPLE)  // => 'John'
+var nameOfTheFirstPerson = list => R.compose(R.prop('name'), R.head)(list)  
+nameOfTheFirstPerson(PEOPLE)  // => 'John'
 
 // Cwiczenie 3:
 // ============
 // Uzyj R.compose(), R.map(), R.inc(), oraz R.filter(), zeby postarzec kazda z osob o 1 rok, 
 // i zwrocic tylko tych, ktorzy maja 25 lat lub mniej.
-var onlyTwentyFiveYearOlds = R.compose(
+var onlyTwentyFiveYearOlds = list => R.compose(
 	R.filter(p => p.age <= 25), 
 	R.map(p => { 
 		let p2 = {...p}; 
 		p2.age = R.inc(p.age); 
 		return p2
 	})
-)(PEOPLE)
+)(list)
+
+onlyTwentyFiveYearOlds(PEOPLE)
 
 // Cwiczenie 4:
 // ============
 // Uzyj R.map() do stworzenia nowego array na bazie PEOPLE array, ktorego kazdy 
 // element bedzie wygladal tak: [name, age] (np. ["John", 10]).
-var newPeople = R.map(({name,age}) => [name,age])(PEOPLE)
+var newPeople = list => R.map(({name,age}) => [name,age])(list)
+newPeople(PEOPLE)
 
 // Cwiczenie 5:
 // ============
@@ -55,11 +60,15 @@ var newPeople = R.map(({name,age}) => [name,age])(PEOPLE)
 // 2. Uzyj R.reduce() i R.add(), zeby zsumowac wiek ludzi.
 //
 // Poprawny wynik: 89
-var summedUpAges = R.pipe(
-  R.innerJoin((p, age) => p.age === age, PEOPLE), 
-  R.map(p => p.age), 
-  R.reduce((acc, age) => R.add(acc, age), 0)
-)([10,25,54])
+var summedUpAges = (people, chosenOnes) => {
+  return R.pipe(
+    R.innerJoin((p, age) => p.age === age, people), 
+    R.map(p => p.age), 
+    R.reduce((acc, age) => R.add(acc, age), 0)
+  )(chosenOnes)
+}
+
+summedUpAges(PEOPLE, [10,25,54])
 
 // Cwiczenie 6:
 // ============
@@ -67,11 +76,15 @@ var summedUpAges = R.pipe(
 // uzyj R.sum() do zsumowania.
 //
 // Poprawny wynik: 89
-var summedUpAges2 = R.pipe(
-  R.innerJoin((p, age) => p.age === age, PEOPLE), 
-  R.map(p => p.age), 
-  R.sum
-)([10,25,54])
+var summedUpAges2 = (people, chosenOnes) => {
+  return R.pipe(
+    R.innerJoin((p, age) => p.age === age, people), 
+    R.map(p => p.age), 
+    R.sum
+  )(chosenOnes)
+}
+
+summedUpAges2(PEOPLE, [10,25,54])
 
 // Cwiczenie 7:
 // ============
@@ -81,7 +94,8 @@ var summedUpAges2 = R.pipe(
 // - zwiekszyc o jeden oraz zanegowac
 //
 // Poprawny wynik: -9
-var newNumber = R.pipe(R.sum, R.add(3), R.inc, R.negate)([2,3])
+var newNumber = (list) => R.pipe(R.sum, R.add(3), R.inc, R.negate)(list)
+newNumber([2,3])
 
 
 ```
