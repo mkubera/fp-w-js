@@ -482,7 +482,7 @@ Reasumujac, JavaScript jest bardzo luznym jezykiem (w przeciwienstwe do statyczn
 Lekarstwem na powyzsze problemy jest trzymanie sie nastepujacych zasad:
 - piszmy czyste funkcje
 - piszmy deklaratywny kod
-- piszmy male funkcje, z ktorych mozemy komponowac wieksze funkcje, z ktorych z kolei bedzie zkomponowany nasz program
+- piszmy male funkcje, z ktorych mozemy komponowac wieksze funkcje, z ktorych z kolei bedzie skomponowany nasz program
 
 ## React
 
