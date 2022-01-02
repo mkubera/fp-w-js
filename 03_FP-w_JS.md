@@ -234,12 +234,10 @@ Funkcje w JS, podobnie jak w jezykach funkcyjnych, sa funkcjami pierwszej katego
 const addOne = (n) => n + 1;
 
 // Ramda
-R.map(addOne, [1, 2, 3]) // [2,3,4]
+R.map(addOne, [1, 2, 3]); // [2,3,4]
 
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].map(addOne); // [2,3,4]
+// Vanilla
+[1, 2, 3].map(addOne); // [2,3,4]
 ```
 
 ```javascript
@@ -289,27 +287,21 @@ Przyklady:
 ```javascript
 // map
 // Ramda
-R.map((x) => x + x, [1, 2, 3]) // [2, 4, 6]
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].map((x) => x + x); // [2,4,6]
+R.map((x) => x + x, [1, 2, 3]); // [2, 4, 6]
+// Vanilla
+[1, 2, 3].map((x) => x + x); // [2,4,6]
 
 // filter
 // Ramda
-R.filter((x) => x > 2, [1, 2, 3]) // [3]
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].filter((x) => x > 2); // [3]
+R.filter((x) => x > 2, [1, 2, 3]); // [3]
+// Vanilla
+[1, 2, 3].filter((x) => x > 2); // [3]
 
 // reduce
 // Ramda
-R.reduce((acc, x) => acc + x, 0, [1, 2, 3]) // (1+2+3) == 6
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].reduce((acc, x) => acc + x, 0); // 6
+R.reduce((acc, x) => acc + x, 0, [1, 2, 3]); // (1+2+3) == 6
+// Vanilla
+[1, 2, 3].reduce((acc, x) => acc + x, 0); // 6
 ```
 
 Oczywiscie, mozliwosci tych funkcji sa ogromne. W dodatku, czesto uzywamy function chaining, zeby uzywac ich razem.
@@ -351,12 +343,10 @@ Wysmienitym przykladem jest uzywanie funkcji `R.map` (ktora jest podobna do naty
 
 ```javascript
 // Ramda
-R.map((n) => n * n, [1, 2, 3]) // [1,4,9]
+R.map((n) => n * n, [1, 2, 3]); // [1,4,9]
 
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].map((n) => n * n); // [1,4,9]
+// Vanilla
+[1, 2, 3].map((n) => n * n); // [1,4,9]
 ```
 
 `R.map` bierze liste liczb (`[1,2,3]`), i aplikuje anonimowa funkcje (`=>`) do kazdej z nich. Dla celow wylacznie edukacyjnych, tu jest kod, ktory dokona tego samego, ale z uzyciem nazwanej funkcji w miejscu anonimowej):
@@ -556,12 +546,10 @@ R.filter((n) => n !== 1, [1, 2, 3]); // [2,3]
 
 // lub uzywaja R.pipe
 
-R.filter(R.pipe(R.equals(1), R.not), [1, 2, 3]) // [2,3]
+R.filter(R.pipe(R.equals(1), R.not), [1, 2, 3]); // [2,3]
 
-  [
-    // Vanilla
-    (1, 2, 3)
-  ].filter((n) => n !== 1);
+// Vanilla
+[1, 2, 3].filter((n) => n !== 1);
 ```
 
 Mozemy smialo usunac z listy wiecej niz jeden element.
@@ -570,12 +558,10 @@ W przykladzie ponizej wybieramy jedynie liczby, ktore rownaja sie 3 lub sa wieks
 
 ```javascript
 // Ramda
-R.filter(R.flip(R.gte)(3), [1, 2, 3, 4, 5]) // [3,4,5]
+R.filter(R.flip(R.gte)(3), [1, 2, 3, 4, 5]); // [3,4,5]
 
-  [
-    // Vanilla
-    (1, 2, 3, 4, 5)
-  ].filter((n) => n >= 3);
+// Vanilla
+[1, 2, 3, 4, 5].filter((n) => n >= 3);
 ```
 
 ### Update'owanie Listy
@@ -585,46 +571,41 @@ Czasem musimy zmienic konkretny element (lub elementy) w liscie lub zmienic nawe
 Przyklad update'u wszystkich elementow listy:
 
 ```javascript
+const people = [
+  { name: "Tom", age: 22 },
+  { name: "Dick", age: 33 },
+  { name: "Mortimer", age: 44 },
+];
+
 // Ramda
 R.map((n) => R.add(n, n), [1, 2, 3]); // [2,4,6]
 
-R.map(
-  (person) => ({ ...person, age: R.inc(person.age) }),
-  [
-    { name: "Tom", age: 22 },
-    { name: "Dick", age: 33 },
-    { name: "Mortimer", age: 44 },
-  ]
-)[
-  // [{name: "Tom", age: 23}, {name: "Dick", age: 34}, {name: "Mortimer", age: 45}]
+R.map((person) => ({ ...person, age: R.inc(person.age) }), people);
+// [{name: "Tom", age: 23}, {name: "Dick", age: 34}, {name: "Mortimer", age: 45}]
 
-  // Vanilla
-  ({ name: "Tom", age: 22 },
-  { name: "Dick", age: 33 },
-  { name: "Mortimer", age: 44 })
-].map((person) => ({ ...person, age: person.age + 1 }));
+// Vanilla
+people.map((person) => ({ ...person, age: person.age + 1 }));
 ```
 
 Przyklad zmiany jedynie osoby `Tom`.
 
 ```javascript
+const people = [
+  { name: "Tom", age: 22 },
+  { name: "Dick", age: 33 },
+  { name: "Mortimer", age: 44 },
+];
+
 //Ramda
 R.map(
   (person) =>
     person.name === "Tom" ? { ...person, age: R.inc(person.age) } : person,
-  [
-    { name: "Tom", age: 22 },
-    { name: "Dick", age: 33 },
-    { name: "Mortimer", age: 44 },
-  ]
-)[
-  // [{name: "Tom", age: 23}, {name: "Dick", age: 33}, {name: "Mortimer", age: 44}]
+  people
+);
+// [{name: "Tom", age: 23}, {name: "Dick", age: 33}, {name: "Mortimer", age: 44}]
 
-  // Vanilla
-  ({ name: "Tom", age: 22 },
-  { name: "Dick", age: 33 },
-  { name: "Mortimer", age: 44 })
-].map((person) =>
+// Vanilla
+people.map((person) =>
   person.name === "Tom" ? { ...person, age: R.inc(person.age) } : person
 );
 ```
@@ -634,19 +615,20 @@ R.map(
 Wybieranie z listy jest podobne do usuwania z listy. Tu rowniez uzywamy funkcji `R.filter`. Rozbilem usuwanie i wybieranie to na dwa koncepty, bo tak dyktuje mi doswiadczenie w uczeniu FP.
 
 ```javascript
-// Ramda
-R.filter((str) => str === "John", ["Mary", "Yousef", "John", "Mark"]) // ["John"]
+const names = ["Mary", "Yousef", "John", "Mark"];
 
-  [
-    // Vanilla
-    ("Mary", "Yousef", "John", "Mark")
-  ].filter((str) => str === "John"); // ["John"]
+// Ramda
+R.filter((str) => str === "John", names); // ["John"]
+
+// Vanilla
+names.filter((str) => str === "John"); // ["John"]
 ```
 
 Notka: Zauwaz prosze, ze wybierajac cos z listy, otrzymujemy nie sam element, ale liste z elementem (lub wieloma elementami). Wiec jesli chcemy wybrac, to musimy tak:
 
 ```javascript
 const names = ["Mary", "Yousef", "John", "Mark"];
+
 // Ramda
 R.compose(
   R.head,
