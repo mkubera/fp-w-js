@@ -3,16 +3,21 @@
 # Spis tresci
 
 - [Czym jest JavaScript w kontekscie funkcyjnego programowania](#czym-jest-js-w-kontekscie-fp)
+  - [Ramda docs - jak czytac anotacje](#ramda-docs---jak-czytac-anotacje)
 - [Koncepty funkcyjnego programowania uzywane w JavaScript](#koncepty-funkcyjnego-programowania-uzywane-w-js)
-  - Pure functions
-  - Immutability
-  - First-class functions
-  - Higher-order functions
-  - Declarative code
-  - Currying
-  - Popularne operacje na kolekcjach
-  - Pipe oraz Compose
+  - [Pure functions](#pure-functions)
+  - [Immutability](#immutability)
+  - [First-class functions](#first-class-functions)
+  - [Higher-order functions](#higher-order-functions)
+  - [Declarative code](#declarative-code)
+  - [Currying](#currying)
+  - [Popularne operacje na kolekcjach](#popularne-operacje-na-kolekcjach)
+  - [Pipe oraz Compose](#pipe-oraz-compose)
 - [Przykladowe uzycia](#przykladowe-uzycia)
+  - [Wybieranie z listy](#wybieranie-z-listy)
+  - [Dodawanie do Listy](#dodawanie-do-listy)
+  - [Usuwanie z Listy](#usuwanie-z-listy)
+  - [Update'owanie Listy](#updateowanie-listy)
 - [Cwiczenia](#cwiczenia)
 - [Przykłady użycia funkcyjnego paradygmatu w "mainstreamie" (np. we frameworku React)](#przyklady-uzycia-funkcyjnego-paradygmatu)
 - [Cwiczenia 2](#cwiczenia-2)
@@ -324,7 +329,7 @@ const getPassedPlayers = R.compose(
   R.filter(({ score }) => R.gte(score, 50))
 );
 
-getPassedPlayers(players);
+getPassedPlayers(players); // {passed: 2}
 ```
 
 Zauwaz kilka rzeczy:
@@ -485,7 +490,7 @@ R.pipe(R.add(2), R.multiply(10), R.negate)(100); // -1020
 R.compose(R.negate, R.multiply(10), R.add(2))(100); // -1020
 ```
 
-`pipe` pozwala nam przeslac dane kolejno przez wybrane funkcje, natomiast `compose` komponuje funkcje razem ('laczy' je), i pozwala przeslac do nich dane w formie argumentu, jakgdyby do jednej funkcji.
+`pipe` pozwala nam przeslac dane kolejno przez wybrane funkcje, natomiast `compose` komponuje funkcje razem ('laczy' je), i pozwala przeslac do nich dane w formie argumentu, jak gdyby do jednej funkcji.
 
 Zauwaz, ze w innej kolejnosci ukladamy argumenty w `R.pipe` i w `R.compose`. Na poczatku warto opanowac jedna z tych metod :)
 
@@ -503,7 +508,27 @@ incrByThreeWithPipe(100); // 103
 
 # Przykladowe uzycia
 
-### Dodawanie do Listy
+## Wybieranie z listy
+
+Wybieranie z kolekcji to kwestia uzycia `find` lub `filter`.
+
+```javascript
+const users = [
+  { id: 1, name: "A" },
+  { id: 2, name: "B" },
+  { id: 3, name: "A" },
+];
+
+// Ramda
+R.find(R.propEq("name", "A"))(users); // znajduje jedynie {id: 1, name: "A"}
+R.filter(R.propEq("name", "A"))(users); // znajduje wszystkich userow spelniajacych predykat: [{id: 1, name: "A"}, {id: 3, name: "C"}]
+
+// Vanilla
+users.find((user) => user.name === "A"); // znajduje jedynie {id: 1, name: "A"}
+users.filter((user) => user.name === "A"); // znajduje wszystkich userow spelniajacych predykat: [{id: 1, name: "A"}, {id: 3, name: "A"}]
+```
+
+## Dodawanie do Listy
 
 Dodawanie elementu do listy zawsze stworzy nowa liste.
 
@@ -529,10 +554,11 @@ R.concat(arr2, arr1); //=> [4, 5, 6, 1, 2, 3]
 R.concat("ABC", "DEF"); // 'ABCDEF'
 
 // Vanilla
-[...arr2, ...arr1]`${"ABC"}${"DEF"}`;
+[...arr2, ...arr1];
+`${"ABC"}${"DEF"}`;
 ```
 
-### Usuwanie z Listy
+## Usuwanie z Listy
 
 Usuwanie z listy wymaga uzycia funkcji z modulu `R.filter`. Filter pozwala nam 'filtrowac' elementy w liscie, i wybrac jedynie te, o ktore nam chodzi.  
 Filtrowanie odbywa sie za pomoca anonimowej funkcji (lub nazwanej), ktora przyjmuje jeden argument (element z listy), a produkuje `boolean`.
@@ -564,7 +590,7 @@ R.filter(R.flip(R.gte)(3), [1, 2, 3, 4, 5]); // [3,4,5]
 [1, 2, 3, 4, 5].filter((n) => n >= 3);
 ```
 
-### Update'owanie Listy
+## Update'owanie Listy
 
 Czasem musimy zmienic konkretny element (lub elementy) w liscie lub zmienic nawet wszystkie elementy. W funkcyjnych jezykach do transformacji list sluzy nam funkcja `map`.
 
@@ -610,7 +636,7 @@ people.map((person) =>
 );
 ```
 
-### Wybieranie z Listy
+## Wybieranie z Listy
 
 Wybieranie z listy jest podobne do usuwania z listy. Tu rowniez uzywamy funkcji `R.filter`. Rozbilem usuwanie i wybieranie to na dwa koncepty, bo tak dyktuje mi doswiadczenie w uczeniu FP.
 
@@ -844,12 +870,14 @@ Ich uzycie nie rozni sie w zasadzie od uzycia, ktore juz poznalismy, bo w JSX pi
 import * as R from "ramda";
 
 const ComponentA = ({ arr }) => {
+  const isNotEmpty = (arr) => R.not(R.isEmpty(arr));
+
   return (
     <>
-      {R.not(R.isEmpty(arr)) && (
+      {isNotEmpty(arr) && (
         <ul>
           {R.take(3, arr).map((c) => (
-            <CompoenntB key={c.id} {...c} />
+            <ComponentB key={c.id} {...c} />
           ))}
         </ul>
       )}
