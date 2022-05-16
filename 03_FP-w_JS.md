@@ -124,7 +124,7 @@ addOne(2); // 3
 Kiedy zaczyna sie niebezpieczenstwo impure functions? Wtedy, gdy nasza funkcja moze zaczac produkowac rozne rezultaty.
 
 ```javascript
-const someNum = 1;
+let someNum = 1;
 
 const addOne = (n) => n + someNum;
 
@@ -140,7 +140,7 @@ addOne(2); // 4
 Albo gorzej!
 
 ```javascript
-const someNum = 1;
+let someNum = 1;
 
 const addOne = (n) => {
   someNum++;
@@ -185,7 +185,7 @@ const newNumbers = setArr(numbers, 4); // [1,2,3,4]
 Podobnie uzywamy pure functions w funkcjach wyzszego rzedu typu `.map`, gdzie przekazana funkcja staje sie funkcja callbackowa.
 
 ```javascript
-const numbers = [1.2, 3];
+const numbers = [1, 2, 3];
 
 const newNumbers = numbers.map((n) => n + 1); // [2,3,4]
 // ^^ tutaj anonimowa funkcjs strzalkowa jest czysta
